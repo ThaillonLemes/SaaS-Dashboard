@@ -1,0 +1,82 @@
+# JSON Schema 2020-12 — Tier S block manifest frontmatter.
+# Validates the YAML frontmatter block at the top of every Tier S manifest.
+# Body of the manifest (markdown prose) is NOT validated by this schema.
+#
+# Class: CANONICAL. Edit only via Governor proposal.
+
+$schema: https://json-schema.org/draft/2020-12/schema
+$id: orchestrator/schemas/manifest-S
+title: Block manifest — Tier S (Spike / Small)
+
+type: object
+required: [id, tier, kind, status, files, created_at]
+additionalProperties: false
+
+properties:
+  id:
+    type: string
+    pattern: ^block-\d{3}(-[a-z0-9-]+)?$
+    description: Block identifier, e.g. block-082 or block-082-redis-soak.
+
+  tier:
+    const: S
+
+  kind:
+    enum: [investigation, refactor]
+    description: Tier S excludes gate and implementation kinds.
+
+  status:
+    enum: [Pending, InProgress, Complete, Reverted]
+
+  files:
+    type: object
+    required: [read]
+    additionalProperties: false
+    properties:
+      read:
+        type: array
+        minItems: 1
+        items: { type: string, minLength: 1 }
+      modify:
+        type: array
+        maxItems: 2
+        items: { type: string, minLength: 1 }
+      create:
+        type: array
+        maxItems: 0
+        description: Tier S never creates files; escalate to Tier M.
+        items: { type: string }
+
+  created_at:
+    type: string
+    format: date
+    description: ISO 8601 date when the manifest was authored.
+
+  parallel_with:
+    type: array
+    items:
+      type: string
+      pattern: ^block-\d{3}(-[a-z0-9-]+)?$
+
+  axiom_override:
+    type: string
+    pattern: ^[PQCDT]-?\d+ — .+$
+    description: |
+      Format: "<axiom-id> — <justification>".
+      Example: "P-2 — needed for non-standard interop with the legacy ERP webhook shape."
+      Note: T1 (tenant safety) is NEVER overridable; the orchestrator
+      rejects integration if a manifest declares T-1 override.
+
+  domain:
+    type: string
+    description: |
+      Package or app this block touches (e.g., "packages/identity",
+      "apps/api", "infrastructure/db"). Used by the Governor to enforce
+      the single-writer-per-package rule.
+
+  feature:
+    type: string
+    description: Name from features.md, if any.
+
+  notes:
+    type: string

@@ -1,0 +1,13 @@
+# Rule 08 — Manifest age.
+# Axiom: Principle 9 + P3 (Green tree).
+# Class: CANONICAL. Edit only via Governor proposal.
+
+id: 08-manifest-age
+name: Active manifest age
+axiom_refs: [Principle-9, P3]
+severity: WARNING
+handler: manifest-age
+enabled: true
+
+config:
+  max_age_days: 14

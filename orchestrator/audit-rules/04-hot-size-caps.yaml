@@ -1,0 +1,17 @@
+# Rule 04 — HOT size caps.
+# Axiom: Principle 9 (bounded cognition).
+# Class: CANONICAL. Edit only via Governor proposal.
+
+id: 04-hot-size-caps
+name: HOT path size caps
+axiom_refs: [Principle-9]
+severity: WARNING
+handler: hot-size-caps
+enabled: true
+
+config:
+  workspace:
+    - { path: CLAUDE.md, cap_bytes: 4096 }
+    - { path: STATE.md, cap_bytes: 4096 }
+    - { path: PROTOCOLS.md, cap_bytes: 16384 }
+    - { path: INDEX.md, cap_bytes: 8192 }

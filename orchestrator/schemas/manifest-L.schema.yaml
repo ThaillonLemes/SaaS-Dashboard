@@ -1,0 +1,220 @@
+# JSON Schema 2020-12 — Tier L block manifest frontmatter.
+# Validates the YAML frontmatter block at the top of every Tier L manifest.
+# Body of the manifest (markdown prose) is NOT validated by this schema.
+#
+# Tier L extends Tier M with cross-package impact + rollout plan +
+# activation criteria. All Tier M required fields apply; Tier L adds
+# cross_domain_impact + rollout_plan + activation_criteria.
+#
+# Class: CANONICAL. Edit only via Governor proposal.
+
+$schema: https://json-schema.org/draft/2020-12/schema
+$id: orchestrator/schemas/manifest-L
+title: Block manifest — Tier L (Gate / Cross-domain)
+
+type: object
+required:
+  - id
+  - tier
+  - kind
+  - phase
+  - scope
+  - status
+  - domain
+  - dependencies
+  - files
+  - benchmarks
+  - flags
+  - metrics
+  - created_at
+  - risk
+  - performance_critical
+  - cross_domain_impact
+  - rollout_plan
+  - activation_criteria
+additionalProperties: false
+
+properties:
+  id:
+    type: string
+    pattern: ^block-\d{3}(-[a-z0-9-]+)?$
+
+  tier:
+    const: L
+
+  kind:
+    enum: [gate, implementation, refactor, migration]
+    description: |
+      "gate" for phase exit gates. "implementation" for cross-package
+      features. "refactor" only when the refactor spans ≥ 2 packages.
+      "migration" for contract or schema migrations with rollout.
+
+  phase:
+    type: string
+    pattern: ^Phase \d+( — .+)?$
+
+  scope:
+    enum: [phase-bound, cross-domain-feature]
+
+  status:
+    enum: [Pending, InProgress, Complete, Reverted]
+
+  domain:
+    type: string
+    description: |
+      Primary package or app this block coordinates. Format:
+      "packages/<name>" or "apps/<name>" or "infrastructure/<name>".
+      cross_domain_impact.affected_packages enumerates the rest.
+
+  risk:
+    const: high
+    description: L-tier blocks are by definition high-risk.
+
+  performance_critical:
+    type: boolean
+
+  dependencies:
+    type: array
+    items:
+      type: string
+      pattern: ^block-\d{3}(-[a-z0-9-]+)?$
+
+  files:
+    type: object
+    required: [read, modify, create]
+    additionalProperties: false
+    properties:
+      read:
+        type: array
+        items: { type: string, minLength: 1 }
+      modify:
+        type: array
+        items: { type: string, minLength: 1 }
+      create:
+        type: array
+        items: { type: string, minLength: 1 }
+
+  benchmarks:
+    type: array
+    items: { type: string, minLength: 1 }
+
+  flags:
+    type: array
+    items: { type: string, minLength: 1 }
+
+  tunables:
+    type: array
+    items: { type: string, minLength: 1 }
+
+  metrics:
+    type: array
+    items: { type: string, minLength: 1 }
+
+  created_at:
+    type: string
+    format: date
+
+  parallel_with:
+    type: array
+    items:
+      type: string
+      pattern: ^block-\d{3}(-[a-z0-9-]+)?$
+
+  axiom_override:
+    type: string
+    pattern: ^[PQCDT]-?\d+ — .+$
+    description: |
+      T1 (tenant safety) is NEVER overridable.
+
+  feature:
+    type: string
+
+  estimated_duration_days:
+    type: integer
+    minimum: 1
+    maximum: 60
+
+  contracts_consumed:
+    type: array
+    items: { type: string, minLength: 1 }
+
+  contracts_published:
+    type: array
+    items: { type: string, minLength: 1 }
+
+  cross_domain_impact:
+    type: object
+    required: [affected_packages, contract_breaking]
+    additionalProperties: false
+    properties:
+      affected_packages:
+        type: array
+        minItems: 2
+        items:
+          type: string
+          minLength: 1
+        description: |
+          Package paths affected by this block. Example:
+          ["packages/contracts", "packages/identity", "apps/api"].
+      contract_breaking:
+        type: boolean
+        description: |
+          True when this block changes a published contract type
+          incompatibly (rename, remove, semantic shift).
+      consumers_to_migrate:
+        type: array
+        items: { type: string, minLength: 1 }
+        description: |
+          Required when contract_breaking is true. List of consumer
+          packages that need follow-up migration blocks.
+      schema_migration:
+        type: boolean
+        description: |
+          True when the block introduces a Postgres migration affecting
+          tenant data. Database Agent reviews mandatory.
+    allOf:
+      - if:
+          properties:
+            contract_breaking:
+              const: true
+        then:
+          required: [consumers_to_migrate]
+
+  rollout_plan:
+    type: object
+    required: [stages]
+    additionalProperties: false
+    properties:
+      stages:
+        type: array
+        minItems: 1
+        items:
+          enum:
+            - additive-only
+            - dual-read-dual-write
+            - flag-gated-rollout
+            - consumer-migration
+            - cleanup-old-path
+            - released-default
+
+  activation_criteria:
+    type: array
+    minItems: 1
+    items:
+      type: object
+      required: [name, threshold, measurement]
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+          minLength: 1
+        threshold:
+          type: string
+          minLength: 1
+        measurement:
+          type: string
+          minLength: 1
+        evidence:
+          type: string
+        pass_fail:
+          enum: [Pass, Fail, Pending]

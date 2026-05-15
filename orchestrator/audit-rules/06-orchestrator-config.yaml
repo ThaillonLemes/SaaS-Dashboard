@@ -1,0 +1,12 @@
+# Rule 06 — Orchestrator config integrity.
+# Axiom: new drift class (orchestrator config divergence).
+# Class: CANONICAL. Edit only via Governor proposal.
+
+id: 06-orchestrator-config
+name: Orchestrator config paths resolve
+axiom_refs: [v3-drift]
+severity: ERROR
+handler: orchestrator-config
+enabled: true
+
+config: {}

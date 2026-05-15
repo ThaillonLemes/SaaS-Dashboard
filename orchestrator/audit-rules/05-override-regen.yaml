@@ -1,0 +1,16 @@
+# Rule 05 — Override regen (derivation, not check).
+# Axiom: Override clause + governance integrity.
+# Class: CANONICAL. Edit only via Governor proposal.
+#
+# This rule scans archived manifests for axiom_override: frontmatter entries
+# and regenerates governance/overrides.md as a DERIVED file. It never emits
+# findings — its purpose is the side effect.
+
+id: 05-override-regen
+name: Override dashboard regeneration
+axiom_refs: [override-clause]
+severity: WARNING
+handler: override-regen
+enabled: true
+
+config: {}

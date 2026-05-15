@@ -1,0 +1,23 @@
+# Rule 10 — Manual edit of DERIVED files.
+# Axiom: trust model integrity.
+# Class: CANONICAL. Edit only via Governor proposal.
+#
+# Scaffolded in Wave 2 Session 1; per-repo git visibility against the
+# workspace-root DERIVED files (which live outside any git history) is
+# limited until Wave 3 telemetry lands. Currently mostly aspirational —
+# expect 0 findings on most workspaces.
+
+id: 10-manual-edit-derived
+name: Manual edits to DERIVED artifacts
+axiom_refs: [trust-model]
+severity: WARNING
+handler: manual-edit-derived
+enabled: true
+
+config:
+  derived_paths:
+    - STATE.proposed.md
+    - governance/dag.md
+    - governance/conflicts.md
+    - governance/overrides.md
+  signature_regex: "^chore\\(orchestrator\\):"

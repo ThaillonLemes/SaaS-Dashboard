@@ -1,0 +1,16 @@
+# Rule 03 — Index pointers.
+# Axiom: SSoT integrity.
+# Class: CANONICAL. Edit only via Governor proposal.
+
+id: 03-index-pointers
+name: Index pointers resolve
+axiom_refs: [SSoT]
+severity: ERROR
+handler: index-pointers
+enabled: true
+
+config:
+  index_files:
+    - INDEX.md
+    - CLAUDE.md
+    - PROTOCOLS.md

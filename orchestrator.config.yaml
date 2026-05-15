@@ -1,0 +1,53 @@
+# SaaS workspace orchestrator configuration.
+# Class: CANONICAL. Edit only via Governor proposal.
+#
+# This file declares the project-specific facts the orchestrator binary
+# needs to operate. The binary itself is project-agnostic; MMORPG ships
+# its own config with the same schema and different values.
+#
+# Topology:
+#   - Single monorepo (the entire workspace is one git repo).
+#   - One workspace root that *is* the repo root.
+#   - Up to ~9 Claude Code worktrees under .claude/worktrees/<domain>-<slug>/.
+
+project:
+  name: saas
+  cognition_root: .
+
+# The SaaS workspace is a monorepo: a single git repo, where the
+# "implementation repo" the orchestrator scans is the workspace itself.
+# Worktrees live under .claude/worktrees/<domain>-<slug>/.
+repos:
+  - name: app
+    path: .
+    worktrees_glob: .claude/worktrees/*/
+    state_file: STATE.md
+    next_file: null
+    manifests_active: manifests/active
+    manifests_archive: manifests/archive
+    block_log: governance/log.md
+
+axioms:
+  # Axiom groups defined in PROTOCOLS.md.
+  groups: [P, Q, C, D, T]
+  override_marker: "Axiom override:"
+  source: PROTOCOLS.md
+
+manifest:
+  tiers: [S, M, L]
+  schema_dir: orchestrator/schemas
+  templates_dir: templates
+  required_frontmatter_keys: [id, tier, status]
+
+governance:
+  outputs_dir: governance
+  derived_marker: "<!-- generator: governor"
+  overrides_file: governance/overrides.md
+
+orchestrator:
+  state_dir: .governor/orchestrator
+  audit_rules_dir: orchestrator/audit-rules
+  hooks_dir: orchestrator/hooks
+  transaction_ledger: .governor/orchestrator/transactions
+  cache_file: .governor/orchestrator/.cache.json
+  lock_file: .governor/orchestrator/.lock

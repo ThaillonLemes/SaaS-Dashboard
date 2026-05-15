@@ -1,0 +1,13 @@
+# Rule 09 — File scope cap.
+# Axiom: tier discipline.
+# Class: CANONICAL. Edit only via Governor proposal.
+
+id: 09-file-scope-cap
+name: Tier-M file-scope cap
+axiom_refs: [tier-discipline]
+severity: ERROR
+handler: file-scope-cap
+enabled: true
+
+config:
+  tier_m_cap: 8

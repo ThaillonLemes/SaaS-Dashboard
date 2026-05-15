@@ -1,0 +1,13 @@
+# Rule 07 — Concurrent blocks.
+# Axiom: Principle 9 (bounded cognition).
+# Class: CANONICAL. Edit only via Governor proposal.
+
+id: 07-concurrent-blocks
+name: Concurrent InProgress manifests
+axiom_refs: [Principle-9]
+severity: WARNING
+handler: concurrent-blocks
+enabled: true
+
+config:
+  max_active: 3

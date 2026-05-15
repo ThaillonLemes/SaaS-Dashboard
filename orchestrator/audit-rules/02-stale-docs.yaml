@@ -1,0 +1,16 @@
+# Rule 02 — Stale docs.
+# Axiom: P6 (Decisions on disk) + drift prevention.
+# Class: CANONICAL. Edit only via Governor proposal.
+
+id: 02-stale-docs
+name: Stale anchor / phase docs
+axiom_refs: [P6]
+severity: WARNING
+handler: stale-docs
+enabled: true
+
+config:
+  paths:
+    - docs/arch
+    - docs/phases
+  max_age_days: 90

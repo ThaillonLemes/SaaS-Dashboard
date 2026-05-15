@@ -1,0 +1,36 @@
+# Orchestrator transient state — never committed.
+.governor/orchestrator/.cache.json
+.governor/orchestrator/.lock
+
+# Orchestrator transaction journal — append-only and OPERATIONAL,
+# but local to the operator's session. The Governor decides whether
+# to commit per repo policy. Default: ignore.
+.governor/orchestrator/transactions/*.json
+
+# Derived files regenerated on demand by `governor <command>`.
+# Commit these only if the project wants archived snapshots in git.
+# Default: ignore (regenerable; carry source-hash footers).
+STATE.proposed.md
+governance/dag.md
+governance/conflicts.md
+governance/audit-*.md
+governance/preflight-*.md
+governance/metrics.md
+governance/churn-*.md
+
+# Worktree clones live here. The branches inside are committed; the
+# clone directories are not (they're per-machine working copies).
+.claude/worktrees/
+
+# Node + TypeScript build artifacts (per-package gitignores may add more).
+node_modules/
+*.tsbuildinfo
+.tsx-cache/
+dist/
+build/
+.turbo/
+
+# Env files.
+.env
+.env.local
+.env.*.local

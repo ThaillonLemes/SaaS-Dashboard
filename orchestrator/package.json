@@ -1,0 +1,27 @@
+{
+  "name": "@app/orchestrator",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Workspace orchestrator — deterministic CLI for state, conflicts, dag, doctor, audit, preflight, integrate, undo, metrics, churn, ownership.",
+  "type": "module",
+  "bin": {
+    "governor": "./bin/governor.ts"
+  },
+  "scripts": {
+    "governor": "tsx bin/governor.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "yaml": "^2.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.7.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

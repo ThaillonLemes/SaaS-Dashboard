@@ -1,0 +1,39 @@
+# Rule 12 — Bootstrap integrity (template-driven).
+# Axiom: Principle 8 (rebuildable) + Principle 6 (auditable).
+# Class: CANONICAL. Edit only via Governor proposal.
+#
+# Workspace HOT files declare required sections inline below.
+
+id: 12-bootstrap-integrity
+name: Bootstrap integrity
+axiom_refs: [Principle-6, Principle-8]
+severity: ERROR
+handler: bootstrap-integrity
+enabled: true
+
+config:
+  workspace:
+    - path: CLAUDE.md
+      must_exist: true
+    - path: PROTOCOLS.md
+      required_sections:
+        - "Priority hierarchy"
+        - "The override clause"
+        - "Group P — Process Discipline (6 axioms)"
+        - "Group Q — Code Quality (4 axioms)"
+        - "Group C — Consistency (4 axioms)"
+        - "Group D — Domain Isolation (2 axioms)"
+        - "Group T — Tenant Safety (2 axioms)"
+    - path: STATE.md
+      required_sections:
+        - "Active package work"
+    - path: INDEX.md
+      must_exist: true
+    - path: WORKSPACE_MAP.md
+      must_exist: true
+    - path: AGENT_OPERATING_MODEL.md
+      must_exist: true
+    - path: PARALLEL_IMPLEMENTATION.md
+      must_exist: true
+    - path: orchestrator.config.yaml
+      must_exist: true

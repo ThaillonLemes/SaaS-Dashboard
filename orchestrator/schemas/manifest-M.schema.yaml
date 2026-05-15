@@ -1,0 +1,160 @@
+# JSON Schema 2020-12 — Tier M block manifest frontmatter.
+# Validates the YAML frontmatter block at the top of every Tier M manifest.
+# Body of the manifest (markdown prose) is NOT validated by this schema.
+#
+# Class: CANONICAL. Edit only via Governor proposal.
+
+$schema: https://json-schema.org/draft/2020-12/schema
+$id: orchestrator/schemas/manifest-M
+title: Block manifest — Tier M (Standard implementation)
+
+type: object
+required:
+  - id
+  - tier
+  - kind
+  - phase
+  - scope
+  - status
+  - domain
+  - dependencies
+  - files
+  - benchmarks
+  - flags
+  - metrics
+  - created_at
+  - risk
+  - performance_critical
+additionalProperties: false
+
+properties:
+  id:
+    type: string
+    pattern: ^block-\d{3}(-[a-z0-9-]+)?$
+
+  tier:
+    const: M
+
+  kind:
+    enum: [implementation, refactor, migration]
+    description: Tier M default kinds; gate-class blocks belong in Tier L.
+
+  phase:
+    type: string
+    pattern: ^Phase \d+( — .+)?$
+    description: |
+      The active phase this block belongs to.
+      Example: "Phase 1A" or "Phase 1A — Identity".
+
+  scope:
+    enum: [phase-bound, independent, cross-domain-feature]
+
+  status:
+    enum: [Pending, InProgress, Complete, Reverted]
+
+  domain:
+    type: string
+    description: |
+      Package or app this block touches. Used by the Governor to enforce
+      the single-writer-per-package rule. Format: "packages/<name>" or
+      "apps/<name>" or "infrastructure/<name>".
+
+  risk:
+    enum: [low, medium, high]
+    description: |
+      Drives whether P2 (skeleton-first) applies. Auth, billing, public
+      API, migrations, and external integrations are typically high or
+      medium. Internal CRUD and UI components are typically low.
+
+  performance_critical:
+    type: boolean
+    description: |
+      Drives whether P4 (bench bracketing) applies. Hot paths (query
+      aggregation, dashboard render, API gateway, batch jobs) are
+      typically true.
+
+  dependencies:
+    type: array
+    items:
+      type: string
+      pattern: ^block-\d{3}(-[a-z0-9-]+)?$
+    description: |
+      Block IDs that must merge before this block can start.
+
+  files:
+    type: object
+    required: [read, modify, create]
+    additionalProperties: false
+    properties:
+      read:
+        type: array
+        items: { type: string, minLength: 1 }
+      modify:
+        type: array
+        items: { type: string, minLength: 1 }
+      create:
+        type: array
+        items: { type: string, minLength: 1 }
+    # Constraint enforced by orchestrator (not schema):
+    # len(modify) + len(create) <= 12.
+
+  benchmarks:
+    type: array
+    items: { type: string, minLength: 1 }
+    description: |
+      Named benches from the package's benchmark registry. Required
+      array (may be empty for non-performance-critical blocks).
+
+  flags:
+    type: array
+    items: { type: string, minLength: 1 }
+    description: Feature flag names from the package's flag registry.
+
+  tunables:
+    type: array
+    items: { type: string, minLength: 1 }
+
+  metrics:
+    type: array
+    items: { type: string, minLength: 1 }
+
+  created_at:
+    type: string
+    format: date
+
+  parallel_with:
+    type: array
+    items:
+      type: string
+      pattern: ^block-\d{3}(-[a-z0-9-]+)?$
+
+  axiom_override:
+    type: string
+    pattern: ^[PQCDT]-?\d+ — .+$
+    description: |
+      Format: "<axiom-id> — <justification>".
+      T1 (tenant safety) is NEVER overridable; the orchestrator rejects
+      any manifest declaring T-1 override.
+
+  feature:
+    type: string
+
+  estimated_duration_days:
+    type: integer
+    minimum: 1
+    maximum: 30
+
+  contracts_consumed:
+    type: array
+    items: { type: string, minLength: 1 }
+    description: |
+      Contract type paths this block depends on, e.g.,
+      "@app/contracts/identity/Session" — used for cross-package
+      dependency tracking.
+
+  contracts_published:
+    type: array
+    items: { type: string, minLength: 1 }
+    description: |
+      Contract type paths this block publishes for the first time.
+      Contracts Agent blocks typically have a non-empty list here.

@@ -1,0 +1,17 @@
+# Rule 11 — Ownership violations.
+# Axiom: PROTOCOLS.md ownership rules.
+# Class: CANONICAL. Edit only via Governor proposal.
+#
+# Each implementation repo has its own git history; cross-repo edits are
+# impossible by construction. This rule is scaffolded for the (future)
+# case of a shared monorepo. Expect 0 findings against the current
+# four-repo layout.
+
+id: 11-ownership-violations
+name: Cross-repo edits from a repo branch
+axiom_refs: [ownership]
+severity: ERROR
+handler: ownership-violations
+enabled: true
+
+config: {}

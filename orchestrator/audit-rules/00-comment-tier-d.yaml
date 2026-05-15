@@ -1,0 +1,22 @@
+# Rule 00 — Comment Tier-D forbidden patterns.
+# Axiom: Q3 (Names are the documentation) + Comment Charter Tier-D.
+# Class: CANONICAL. Edit only via Governor proposal.
+
+id: 00-comment-tier-d
+name: Comment Tier-D forbidden patterns
+axiom_refs: [Q3]
+severity: WARNING
+handler: comment-tier-d
+enabled: true
+
+config:
+  scan_repos: true
+  extensions: ['.ts', '.tsx', '.js', '.jsx', '.mjs', '.cjs']
+  patterns:
+    - { regex: '^\s*//\s*=+', label: 'banner equals' }
+    - { regex: '^\s*//\s*-+\s+(helpers|impl|api|utils)', label: 'banner helpers' }
+    - { regex: '^\s*//\s*\*+', label: 'banner asterisks' }
+    - { regex: '^\s*//\s*(Added|Removed|Changed|Modified)\s+(for|in)\s+Block\s+\d+', label: 'block stamp' }
+    - { regex: '^\s*//\s*Was\s+previously', label: 'changelog comment' }
+    - { regex: '^\s*//\s*TODO:?\s*$', label: 'bare TODO' }
+    - { regex: '^\s*//\s*TODO:?\s+(later|fix|do|me)\b', label: 'vague TODO' }

@@ -1,0 +1,52 @@
+# GitHub Actions workflow template for governor audit (warn-only).
+# Copy to .github/workflows/audit.yml at the repository root.
+#
+# Because this is a monorepo, the orchestrator lives in the same checkout
+# the runner clones. No vendoring or sibling-checkout gymnastics needed.
+#
+# Behavior knobs:
+#   - Warn-only by default. Set the GOVERNOR_AUDIT_BLOCKING repo
+#     variable to '1' to flip to blocking once false-positive rate is
+#     acceptable (recommended: 90 days of clean operation).
+#
+# Class: CANONICAL template. DevOps Agent owns this file once installed.
+
+name: governor audit
+
+on:
+  pull_request:
+    branches: [main, master]
+  push:
+    branches: [main, master]
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install orchestrator deps
+        working-directory: orchestrator
+        run: npm install --omit=optional
+
+      - name: Run governor audit
+        env:
+          GOVERNOR_AUDIT_BLOCKING: ${{ vars.GOVERNOR_AUDIT_BLOCKING || '0' }}
+        run: bash orchestrator/ci/audit.sh
+
+      - name: Upload audit report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: governor-audit-${{ github.run_id }}
+          path: governance/audit-*.md
+          if-no-files-found: warn
