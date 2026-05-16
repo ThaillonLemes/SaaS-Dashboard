@@ -2,7 +2,7 @@
 
 _Source of truth for cross-domain current state._
 _Replace-only. Edited by the Governor on integration._
-_Last updated: 2026-05-15 (Phase 0 authored)._
+_Last updated: 2026-05-15 (Block 001 integrated; 1/10 done)._
 
 ---
 
@@ -20,8 +20,8 @@ Phase 0 is sequential; no agents assigned yet.
 
 **Phase:** Phase 0 — Foundation (sequential)
 **Started:** 2026-05-15 (manifests authored)
-**Blocks complete:** 0 / 10
-**Next:** `block-001-monorepo-skeleton` (M, no deps)
+**Blocks complete:** 1 / 10
+**Next:** `block-002-postgres-baseline` (M, depends on 001 — unblocked)
 **Exit:** [`phases/phase-0/exit.md`](phases/phase-0/exit.md)
 
 After Block 010 PASS: Phase 1A-1F unlock in parallel.
@@ -57,7 +57,7 @@ After Block 010 PASS: Phase 1A-1F unlock in parallel.
 
 | Item | Status | Notes |
 |------|--------|-------|
-| Monorepo (pnpm + turbo) | pending | Block 001 / ADR-0001 |
+| Monorepo (pnpm + turbo) | **complete** | Block 001 merged at be17719 / ADR-0001 |
 | PostgreSQL | pending | Block 002 / ADR-0002 (in block) |
 | CI/CD | pending | Block 009 |
 | Deploy target | Fly.io (PaaS-first, portable) | ADR-0004 |
@@ -82,6 +82,8 @@ See [`governance/log.md`](governance/log.md) for entries. Highlights:
 - 2026-05-15 — Scope rename `@app/` → `@saas/` (PROTOCOLS v3).
 - 2026-05-15 — Phase 0 authored: 10 manifests, ADRs 0001/0004/0005,
   phase folder. Preflight READY × 10, conflicts clean, audit 0 errors.
+- 2026-05-15 — Block 001 (monorepo skeleton) integrated: pnpm + turbo
+  + TS strict + ESLint with D1 enforcement. Merge commit be17719.
 
 ---
 
