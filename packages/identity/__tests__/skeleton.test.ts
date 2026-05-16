@@ -1,6 +1,5 @@
-import { describe, expect, it } from 'vitest';
-
 import type { Email, UserId } from '@saas/contracts';
+import { describe, expect, it } from 'vitest';
 
 import {
   AuthError,

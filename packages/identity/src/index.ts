@@ -17,7 +17,10 @@ import type { Credentials, Session, UserContext } from './types';
  * 1A block-011 with no public-signature change (additive fields only;
  * see manifest §9).
  */
-export function authenticate(_creds: Credentials): Promise<Session> {
+export function authenticate(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- TODO(block-011): consume credentials.
+  creds: Credentials,
+): Promise<Session> {
   return Promise.reject(
     new AuthError('NOT_IMPLEMENTED', 'authenticate() — Phase 1A block-011'),
   );
@@ -29,7 +32,10 @@ export function authenticate(_creds: Credentials): Promise<Session> {
  * Phase 0 skeleton — rejects with `AuthError('NOT_IMPLEMENTED')`. Real
  * implementation in Phase 1A block-013.
  */
-export function validateSession(_token: string): Promise<UserContext> {
+export function validateSession(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- TODO(block-013): consume token.
+  token: string,
+): Promise<UserContext> {
   return Promise.reject(
     new AuthError(
       'NOT_IMPLEMENTED',
@@ -44,7 +50,10 @@ export function validateSession(_token: string): Promise<UserContext> {
  * Phase 0 skeleton — rejects with `AuthError('NOT_IMPLEMENTED')`. Real
  * implementation in Phase 1A block-011.
  */
-export function revokeSession(_sessionId: string): Promise<void> {
+export function revokeSession(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- TODO(block-011): consume session id.
+  sessionId: string,
+): Promise<void> {
   return Promise.reject(
     new AuthError(
       'NOT_IMPLEMENTED',
