@@ -1,87 +1,58 @@
-import Fastify, { type FastifyInstance } from 'fastify';
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it } from 'vitest';
 
-function buildApp(): FastifyInstance {
-  const STARTED_AT = Date.now();
+import { buildServer } from '../src/index';
 
-  const app = Fastify({ logger: false, trustProxy: true });
-
-  app.get('/health', async (_req, reply) => {
-    return reply.send({
-      ok: true,
-      version: process.env['APP_VERSION'] ?? 'dev',
-      uptime: Math.floor((Date.now() - STARTED_AT) / 1000),
-    });
-  });
-
-  return app;
+interface HealthBody {
+  readonly ok: boolean;
+  readonly version: string;
+  readonly uptime: number;
 }
 
 describe('GET /health', () => {
-  let app: FastifyInstance;
+  const originalVersion = process.env['APP_VERSION'];
 
-  beforeAll(async () => {
-    app = buildApp();
-    await app.ready();
+  afterEach(() => {
+    if (originalVersion === undefined) delete process.env['APP_VERSION'];
+    else process.env['APP_VERSION'] = originalVersion;
   });
 
-  afterAll(async () => {
-    await app.close();
-  });
-
-  it('returns 200', async () => {
-    const response = await app.inject({ method: 'GET', url: '/health' });
-    expect(response.statusCode).toBe(200);
-  });
-
-  it('returns ok: true, a string version, and a non-negative integer uptime', async () => {
-    const response = await app.inject({ method: 'GET', url: '/health' });
-    const body: unknown = JSON.parse(response.body);
-
-    expect(body).toMatchObject({ ok: true });
-
-    const typed = body as { ok: boolean; version: unknown; uptime: unknown };
-    expect(typeof typed.version).toBe('string');
-    expect(typeof typed.uptime).toBe('number');
-    expect(Number.isInteger(typed.uptime)).toBe(true);
-    expect((typed.uptime as number) >= 0).toBe(true);
-  });
-
-  it('defaults version to "dev" when APP_VERSION is not set', async () => {
-    const saved = process.env['APP_VERSION'];
-    delete process.env['APP_VERSION'];
-
+  it('returns 200 with { ok: true, version, uptime }', async () => {
+    const app = buildServer();
     try {
-      const response = await app.inject({ method: 'GET', url: '/health' });
-      const body = JSON.parse(response.body) as { version: string };
-      expect(body.version).toBe('dev');
+      const res = await app.inject({ method: 'GET', url: '/health' });
+
+      expect(res.statusCode).toBe(200);
+
+      const body = res.json<HealthBody>();
+      expect(body.ok).toBe(true);
+      expect(typeof body.version).toBe('string');
+      expect(typeof body.uptime).toBe('number');
+      expect(Number.isInteger(body.uptime)).toBe(true);
+      expect(body.uptime).toBeGreaterThanOrEqual(0);
     } finally {
-      if (saved !== undefined) {
-        process.env['APP_VERSION'] = saved;
-      }
+      await app.close();
     }
   });
 
-  it('reflects APP_VERSION env var in the response', async () => {
-    const saved = process.env['APP_VERSION'];
-    process.env['APP_VERSION'] = '1.2.3';
-
+  it('falls back to "dev" when APP_VERSION is unset', async () => {
+    delete process.env['APP_VERSION'];
+    const app = buildServer();
     try {
-      const appWithVersion = buildApp();
-      await appWithVersion.ready();
-      const response = await appWithVersion.inject({
-        method: 'GET',
-        url: '/health',
-      });
-      const body = JSON.parse(response.body) as { version: string };
-      expect(body.version).toBe('1.2.3');
-      await appWithVersion.close();
+      const res = await app.inject({ method: 'GET', url: '/health' });
+      expect(res.json<HealthBody>().version).toBe('dev');
     } finally {
-      if (saved !== undefined) {
-        process.env['APP_VERSION'] = saved;
-      } else {
-        delete process.env['APP_VERSION'];
-      }
+      await app.close();
+    }
+  });
+
+  it('reflects APP_VERSION when set', async () => {
+    process.env['APP_VERSION'] = 'v1.2.3';
+    const app = buildServer();
+    try {
+      const res = await app.inject({ method: 'GET', url: '/health' });
+      expect(res.json<HealthBody>().version).toBe('v1.2.3');
+    } finally {
+      await app.close();
     }
   });
 });
