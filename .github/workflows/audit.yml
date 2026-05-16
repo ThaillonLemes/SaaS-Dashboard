@@ -1,0 +1,48 @@
+name: Governor audit
+
+on:
+  pull_request:
+    branches: [main]
+  schedule:
+    # WHY: Monday 06:00 UTC — weekly governance signal at a low-traffic time.
+    - cron: '0 6 * * 1'
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    name: governor audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Install orchestrator deps
+        working-directory: orchestrator
+        # WHY: npm (not pnpm) — orchestrator is a self-contained package; avoids a pnpm bootstrap dep.
+        run: npm install --omit=optional
+
+      - name: Run governor audit
+        env:
+          # WHY: Warn-only by default. Set GOVERNOR_AUDIT_BLOCKING repo variable to '1' to block
+          # merges on audit errors — recommended only after 90 days of clean warn-only operation.
+          GOVERNOR_AUDIT_BLOCKING: ${{ vars.GOVERNOR_AUDIT_BLOCKING || '0' }}
+        run: bash orchestrator/ci/audit.sh
+
+      - name: Upload audit report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: governor-audit-${{ github.run_id }}
+          path: governance/audit-*.md
+          if-no-files-found: warn
