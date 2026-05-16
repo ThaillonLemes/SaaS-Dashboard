@@ -97,8 +97,8 @@ For an AI-native SaaS with parallel implementation as the primary goal:
 
 2. **No deep imports across packages.** Enforced by ESLint:
    ```
-   '@app/identity'         ✅ public surface
-   '@app/identity/src/...' ❌ deep import — forbidden
+   '@saas/identity'         ✅ public surface
+   '@saas/identity/src/...' ❌ deep import — forbidden
    ```
 
 3. **Each package declares its dependencies** in its `package.json`. No implicit dependencies via root.
@@ -113,8 +113,8 @@ For an AI-native SaaS with parallel implementation as the primary goal:
 
 ## Naming conventions
 
-- **Package names:** `@app/<domain>` (e.g., `@app/identity`, `@app/contracts`).
-- **App names:** `@app/<app-name>` (e.g., `@app/api`, `@app/web`).
+- **Package names:** `@saas/<domain>` (e.g., `@saas/identity`, `@saas/contracts`).
+- **App names:** `@saas/<app-name>` (e.g., `@saas/api`, `@saas/web`).
 - **Internal paths:** `packages/identity/src/...` (snake-case folders, PascalCase TS files for components / Pascal classes).
 - **Test files:** `*.test.ts` colocated with code, or under `__tests__/`.
 
@@ -153,7 +153,7 @@ across the graph; cached across CI runs.
 
 ## Deployment
 
-- **`apps/api/`** deploys as a Docker image. Build via `turbo run build --filter=@app/api`. Runtime: Node.js LTS.
+- **`apps/api/`** deploys as a Docker image. Build via `turbo run build --filter=@saas/api`. Runtime: Node.js LTS.
 - **`apps/web/`** deploys as a static SPA (or SSR if needed later). Build artifacts in `apps/web/dist/`.
 - **`apps/jobs/`** (when introduced) deploys as a separate container running background workers.
 - **Database migrations** run as a pre-deploy step, not embedded in app containers.

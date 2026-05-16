@@ -6,6 +6,6 @@ Active overrides: 0.
 
 _No axiom overrides recorded in archived manifest frontmatter._
 
-<!-- generator: governor audit:override-regen @ 2026-05-15T19:25:31.028Z -->
+<!-- generator: governor audit:override-regen @ 2026-05-15T22:55:04.084Z -->
 <!-- sources:
 <!-- end:sources -->

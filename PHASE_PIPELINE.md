@@ -246,7 +246,7 @@ Block manifests declare dependencies explicitly:
 Depends-on:
   - Block 014 (this repo)
   - Block 027 (Phase 1C, this repo)
-  - contract: @app/contracts/analytics/KpiResult (introduced in Block 030)
+  - contract: @saas/contracts/analytics/KpiResult (introduced in Block 030)
 ```
 
 The Governor uses these to:

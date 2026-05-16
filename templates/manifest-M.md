@@ -28,7 +28,7 @@ One sentence.
 Prior block IDs and contracts. Format:
 - `Block <NNN>` for same-domain
 - `<domain> Block <NNN>` for cross-domain
-- `contract: @app/contracts/<path>/<TypeName>` for contract dependencies
+- `contract: @saas/contracts/<path>/<TypeName>` for contract dependencies
 
 ## 3. Files
 
@@ -68,7 +68,7 @@ Conditions that force a revert. Examples:
 What changes after this block is integrated. Examples:
 - New endpoint `POST /tenants/:tenantId/dashboards` available.
 - New repository method `DashboardRepository.create(ctx, def)`.
-- New contract type `DashboardCreate` exported from `@app/contracts`.
+- New contract type `DashboardCreate` exported from `@saas/contracts`.
 
 ## 8. Tenant safety check
 

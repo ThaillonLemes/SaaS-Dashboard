@@ -128,7 +128,7 @@ export const CreateDashboardSchema = z.object({
 
 ```ts
 // apps/web/src/api/dashboard.ts
-import { CreateDashboardRequest, CreateDashboardResponse } from '@app/contracts';
+import { CreateDashboardRequest, CreateDashboardResponse } from '@saas/contracts';
 
 export async function createDashboard(
   tenantId: TenantId,

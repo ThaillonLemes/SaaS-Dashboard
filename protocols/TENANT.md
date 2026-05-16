@@ -131,7 +131,7 @@ violation. The block manifest names the mechanism.
 Every log line and trace span carries `tenantId` and `userId` (when available):
 
 ```ts
-import { createLogger } from '@app/observability';
+import { createLogger } from '@saas/observability';
 
 const log = createLogger('dashboard.service');
 

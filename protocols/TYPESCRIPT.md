@@ -119,7 +119,7 @@ No class hierarchies for variant types. `switch (x.kind)` is exhaustive when
 
 ## TS7 — Module imports
 
-- Path aliases for cross-package (`@app/identity`, `@app/contracts`).
+- Path aliases for cross-package (`@saas/identity`, `@saas/contracts`).
 - Relative imports only within the same package's `src/`.
 - Sort: external → internal aliases → relative. Alphabetical within group. Enforced by ESLint `import/order`.
 - Public surface of a package is `index.ts` — barrel exports only there.
@@ -202,7 +202,7 @@ No formatting churn in commits. Format-on-save.
 
 ## TS13 — Dependency hygiene
 
-- Workspace dependencies: `"@app/identity": "workspace:*"`.
+- Workspace dependencies: `"@saas/identity": "workspace:*"`.
 - External deps pinned to exact versions (`"react": "18.3.1"`) — no `^` or `~`.
 - New external dep requires manifest authority (new dependency = new abstraction surface).
 

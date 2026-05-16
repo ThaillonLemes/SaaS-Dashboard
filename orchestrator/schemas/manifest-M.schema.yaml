@@ -149,7 +149,7 @@ properties:
     items: { type: string, minLength: 1 }
     description: |
       Contract type paths this block depends on, e.g.,
-      "@app/contracts/identity/Session" — used for cross-package
+      "@saas/contracts/identity/Session" — used for cross-package
       dependency tracking.
 
   contracts_published:

@@ -164,7 +164,7 @@ Every repository method emits:
 Standard via `packages/observability`:
 
 ```ts
-import { withSpan, metrics } from '@app/observability';
+import { withSpan, metrics } from '@saas/observability';
 
 export async function getDashboard(ctx: TenantContext, id: DashboardId) {
   return withSpan('dashboard.get', { tenantId: ctx.tenantId }, async () => {

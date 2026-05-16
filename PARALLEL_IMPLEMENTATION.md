@@ -18,7 +18,7 @@ the model degrades.
 
 Each domain is a `packages/<name>/` package with a public surface in
 `index.ts`. Deep imports across packages are **forbidden** and enforced by
-ESLint (`no-restricted-imports` configured to block `@app/*/src/*`).
+ESLint (`no-restricted-imports` configured to block `@saas/*/src/*`).
 
 Two agents working on `packages/analytics` and `packages/dashboard` cannot
 break each other's internals — the type system literally won't let them.
@@ -233,7 +233,7 @@ Block 4 unblocks block 5.
 
 ```ts
 // In packages/dashboard:
-import { internalKpiCache } from '@app/analytics/src/internal/cache';   // ❌
+import { internalKpiCache } from '@saas/analytics/src/internal/cache';   // ❌
 ```
 
 D1 violation. ESLint catches it. If you need the type, expose it via the

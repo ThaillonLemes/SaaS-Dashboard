@@ -66,9 +66,9 @@ packages/<domain>/
 
 ## Dependencies
 
-- `@app/contracts` — types
-- `@app/observability` — logging, metrics
-- `@app/<other>` — <reason>
+- `@saas/contracts` — types
+- `@saas/observability` — logging, metrics
+- `@saas/<other>` — <reason>
 
 No deep imports from any of the above (D1).
 
@@ -86,7 +86,7 @@ All tenant-scoped tables have `tenant_id NOT NULL` + RLS policy (per T1).
 
 - **Tenancy:** every public method accepts `TenantContext` (or `AdminContext` for cross-tenant ops).
 - **Observability:** every method emits a trace span + log line; durations are metrics.
-- **Errors:** thrown errors are subclasses of `<DomainErrorBase>`; cross-domain returns use `Result<T, E>` from `@app/contracts`.
+- **Errors:** thrown errors are subclasses of `<DomainErrorBase>`; cross-domain returns use `Result<T, E>` from `@saas/contracts`.
 
 ---
 
@@ -96,7 +96,7 @@ All tenant-scoped tables have `tenant_id NOT NULL` + RLS policy (per T1).
 - Integration tests use a real DB (via Testcontainers or similar): `__tests__/integration/`.
 - Tenant isolation tests (per T9 in TENANT addendum): mandatory.
 
-Run: `pnpm test --filter=@app/<domain>`
+Run: `pnpm test --filter=@saas/<domain>`
 
 ---
 

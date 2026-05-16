@@ -112,23 +112,14 @@ creates them.
 
 ---
 
-## Renaming the project (optional but recommended)
+## Project scope
 
-The package uses `@app/*` as the pnpm scope (e.g.,
-`@app/identity`, `@app/contracts`) and `project.name: saas` in
-`orchestrator.config.yaml`. To rebrand:
-
-1. Pick a name (e.g., `acme`).
-2. In `orchestrator.config.yaml`, change `project.name: saas` to
-   `project.name: acme`.
-3. In Phase 0 Block 001 (which the Governor will propose), the
-   monorepo skeleton uses `@acme/*` scope from the start. No mass
-   find-and-replace needed because Phase 0 hasn't created the
-   `package.json` files yet.
-
-If you don't rename, `@app/*` works fine — it's a placeholder scope
-that doesn't conflict with anything published on npm under the same
-name.
+The workspace uses `@saas/*` as the pnpm scope (e.g., `@saas/identity`,
+`@saas/contracts`) and `project.name: saas` in
+`orchestrator.config.yaml`. Both were set during initial Governor
+bootstrap on 2026-05-15 — see
+[.governor/proposals/2026-05-15-scope-rename.md](.governor/proposals/2026-05-15-scope-rename.md)
+for the rename record.
 
 ---
 

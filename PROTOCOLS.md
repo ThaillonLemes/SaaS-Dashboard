@@ -1,6 +1,6 @@
 # SaaS Workspace Protocols
 
-_Version: 1_
+_Version: 3_
 _Stewardship: Workspace Governor Agent only. Changes require Governor proposal + user approval + version bump + entry in `governance/log.md`._
 
 This is the workspace constitution. Read once per session. It governs every implementation block, in every package, in every language.
@@ -164,8 +164,8 @@ internals. Inter-package communication goes only through the published
 contract — a TypeScript interface exported from `packages/contracts/` or
 from the producer package's `index.ts` public surface.
 
-- ✅ `packages/analytics` imports `import { TenantContext } from '@app/contracts'`
-- ❌ `packages/analytics` imports `import { internalCache } from '@app/identity/src/cache'`
+- ✅ `packages/analytics` imports `import { TenantContext } from '@saas/contracts'`
+- ❌ `packages/analytics` imports `import { internalCache } from '@saas/identity/src/cache'`
 
 Tooling enforces: each package declares its public surface in `index.ts`; no
 deep imports from another package's `src/` allowed (ESLint rule).
@@ -410,3 +410,4 @@ Features spanning multiple packages are tracked in `features.md`
 
 - **v1 — initial (2026-05-14)** — 18 axioms (P/Q/C/D/T) + Comment Charter + language addenda pointers + manifest tiers + coordination rules. Cognition lived in a `foundation/` subfolder.
 - **v2 — V3 topology (2026-05-15)** — Promoted cognition files to workspace root. Added orchestrator (`/orchestrator/`), `.governor/` private workspace, `.claude/skills/` (11 governor commands), `CLAUDE.md` workspace bootstrap, `WORKSPACE_MAP.md`. Parallel-implementation upgrade: one Domain Agent per package, each in its own Claude Code worktree (`.claude/worktrees/<domain>-<slug>/`). Up to ~9 agents in flight simultaneously after Phase 0. No changes to axioms — only topology and tooling.
+- **v3 — scope rename (2026-05-15)** — `@app/` → `@saas/` across cognition, protocols, templates, `orchestrator/package.json`. Header `Version:` field corrected (was `1` since v2 landed). No axiom changes. Proposal: `.governor/proposals/2026-05-15-scope-rename.md`.

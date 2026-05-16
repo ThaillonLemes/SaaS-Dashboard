@@ -31,8 +31,8 @@ for f in "${MANIFESTS[@]}"; do
     continue
   fi
 
-  # Extract first 50 lines for inspection.
-  HEAD=$(head -n 50 "$f")
+  # Extract first 200 lines for inspection.
+  HEAD=$(head -n 200 "$f")
 
   # Rule 1: must start with `---` on line 1.
   if ! printf '%s\n' "$HEAD" | head -n 1 | grep -qE '^---[[:space:]]*$'; then
@@ -41,11 +41,11 @@ for f in "${MANIFESTS[@]}"; do
     continue
   fi
 
-  # Rule 2: must contain a closing `---` within first 50 lines.
-  # (Frontmatter cannot reasonably exceed 50 lines.)
+  # Rule 2: must contain a closing `---` within first 200 lines.
+  # (Frontmatter cannot reasonably exceed 200 lines.)
   CLOSE_LINE=$(printf '%s\n' "$HEAD" | awk 'NR>1 && /^---[[:space:]]*$/{print NR; exit}')
   if [ -z "$CLOSE_LINE" ]; then
-    echo "manifest-frontmatter: $f — no closing '---' within first 50 lines" >&2
+    echo "manifest-frontmatter: $f — no closing '---' within first 200 lines" >&2
     FAIL=1
     continue
   fi

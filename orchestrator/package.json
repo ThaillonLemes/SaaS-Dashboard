@@ -1,5 +1,5 @@
 {
-  "name": "@app/orchestrator",
+  "name": "@saas/orchestrator",
   "version": "0.1.0",
   "private": true,
   "description": "Workspace orchestrator — deterministic CLI for state, conflicts, dag, doctor, audit, preflight, integrate, undo, metrics, churn, ownership.",
