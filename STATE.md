@@ -2,7 +2,7 @@
 
 _Source of truth for cross-domain current state._
 _Replace-only. Edited by the Governor on integration._
-_Last updated: 2026-05-16 (Phase 0 — 9/10 done; exit-gate pending)._
+_Last updated: 2026-05-16 (Phase 0 — COMPLETE. Phase 1A-1F unlocked)._
 
 ---
 
@@ -18,13 +18,13 @@ All Phase 0 implementation blocks done. Only `block-010-phase-0-exit-gate` remai
 
 ## Active phase
 
-**Phase:** Phase 0 — Foundation
+**Phase:** Phase 0 — Foundation — **COMPLETE** (2026-05-16)
 **Started:** 2026-05-15
-**Blocks complete:** 9 / 10 (001, 002, 003, 004, 005, 006, 007, 008, 009)
-**Unlocked next:** `block-010-phase-0-exit-gate` — unblocked, ready to run
-**Exit doc:** [`phases/phase-0/exit.md`](phases/phase-0/exit.md)
+**Blocks complete:** 10 / 10 (001–010)
+**Exit gate:** PASS — [`phases/phase-0/exit.md`](phases/phase-0/exit.md)
+**Exit report:** [`governance/phase-0-exit-report.md`](governance/phase-0-exit-report.md)
 
-After Block 010 PASS: Phase 1A-1F unlock in parallel.
+**Active phase:** none — Phase 1A-1F may each start independently.
 
 ---
 
@@ -87,6 +87,8 @@ See [`governance/log.md`](governance/log.md). Highlights:
   Main: c2ff534.
 - 2026-05-16 — Blocks 005/006/007 integrated (identity, tenancy, api-shell).
   Main: e50e2af. Phase 0 = 9/10. Exit-gate unblocked.
+- 2026-05-16 — Block 010 exit gate PASS. Phase 0 closed.
+  Phase 1A-1F unlocked. See exit report.
 
 ---
 
