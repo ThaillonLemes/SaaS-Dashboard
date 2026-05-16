@@ -34,3 +34,11 @@ build/
 .env
 .env.local
 .env.*.local
+
+# Logs and OS artifacts.
+*.log
+.DS_Store
+
+# Test and coverage output.
+coverage/
+.vitest-cache/
