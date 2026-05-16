@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+# WHY: Minimal permissions — only pull-requests:write for the failure comment; everything else read-only.
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  ci:
+    name: typecheck · lint · test
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # WHY: Full history lets turborepo compare against the merge-base for affected-package detection.
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        # WHY: No version pin here — reads packageManager field in root package.json (pnpm@9.15.9).
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          # WHY: cache: 'pnpm' keys the pnpm store on the lockfile hash — no manual actions/cache needed.
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck · lint · test
+        run: pnpm turbo run typecheck lint test
+        env:
+          # WHY: Turbo remote cache is optional; CI runs without it (slower cold builds only).
+          TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+          TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+
+      - name: Comment on PR (failure)
+        if: failure() && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '❌ CI failed. See the [workflow run](' +
+                context.serverUrl + '/' + context.repo.owner + '/' +
+                context.repo.repo + '/actions/runs/' + context.runId +
+                ') for the full log.',
+            })

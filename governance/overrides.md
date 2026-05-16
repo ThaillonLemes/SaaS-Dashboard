@@ -6,6 +6,7 @@ Active overrides: 0.
 
 _No axiom overrides recorded in archived manifest frontmatter._
 
-<!-- generator: governor audit:override-regen @ 2026-05-15T22:55:04.084Z -->
+<!-- generator: governor audit:override-regen @ 2026-05-16T02:09:55.229Z -->
 <!-- sources:
+<!--   .claude/worktrees/busy-chaplygin-d19ec0/manifests/archive/block-001-monorepo-skeleton.md  96424da15c37693eab9d620441fb7b2a42a3bb5861afcb4f02f18ce2727848a2 -->
 <!-- end:sources -->
