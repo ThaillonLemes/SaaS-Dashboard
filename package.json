@@ -13,12 +13,16 @@
     "governor": "pnpm --filter @saas/orchestrator run governor"
   },
   "devDependencies": {
+    "@types/pg": "^8.20.0",
     "@typescript-eslint/eslint-plugin": "7.18.0",
     "@typescript-eslint/parser": "7.18.0",
+    "drizzle-kit": "^0.31.10",
+    "drizzle-orm": "^0.45.2",
     "eslint": "8.57.1",
     "eslint-config-prettier": "9.1.2",
     "eslint-import-resolver-typescript": "3.10.1",
     "eslint-plugin-import": "2.32.0",
+    "pg": "^8.20.0",
     "prettier": "3.8.3",
     "turbo": "2.9.14",
     "typescript": "5.9.3"
