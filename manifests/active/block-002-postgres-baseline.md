@@ -21,13 +21,13 @@ files:
     - decisions/ADR-0001-monorepo.md
     - decisions/ADR-0004-deploy.md
     - templates/adr-template.md
-  modify: []
+  modify:
+    - package.json
   create:
     - decisions/ADR-0002-postgres-orm.md
     - infrastructure/db/README.md
     - infrastructure/db/migrations/0001_init.sql
     - infrastructure/db/drizzle.config.ts
-    - infrastructure/db/seeds/.gitkeep
     - docker-compose.yml
     - .env.example
 benchmarks: []
@@ -73,12 +73,14 @@ deploys override via PaaS secrets (per ADR-0004).
 
 ```
 infrastructure/db/
-├── README.md                 — how to run migrations, seeds, local pg
+├── README.md                 — how to run migrations, local pg, seeds (when added)
 ├── migrations/
-│   └── 0001_init.sql        — bootstrap migration (creates schema_version table or equivalent)
-├── seeds/                    — empty, .gitkeep
+│   └── 0001_init.sql        — bootstrap migration
 └── drizzle.config.ts        — Drizzle config (if Drizzle chosen)
 ```
+
+`seeds/` directory is created on demand when the first seed is needed;
+no `.gitkeep` shipped here (keeps file count within the Tier-M cap).
 
 The `0001_init.sql` migration creates whatever bookkeeping table the
 chosen ORM needs. Drizzle uses `__drizzle_migrations`. If Drizzle is the
@@ -86,26 +88,39 @@ ORM, the tool creates it on first `drizzle-kit push`, so the SQL file
 might just have `-- intentionally empty; drizzle manages its own table`.
 Either way, the migration runs idempotently.
 
-### Root scripts
+### Root `package.json` modification
 
-**Not modified by this block.** Block-001 ships root `package.json` with
-all generic scripts. Database commands run via `npx drizzle-kit <cmd>`
-(or chosen ORM's equivalent) — documented in
-`infrastructure/db/README.md`. Avoiding a root `package.json` modify
-here keeps the single-writer-per-file rule clean (Block 002 owns
-nothing at workspace root other than `docker-compose.yml` and
-`.env.example`).
+Add the chosen ORM + migration tool to root `devDependencies` via:
+
+```
+pnpm add -Dw drizzle-kit drizzle-orm pg @types/pg
+```
+
+(Or chosen-tool equivalents if ADR-0002 picks Kysely or Prisma.)
+
+This is the ONLY root-file modify in this block. No new pnpm scripts
+needed at root — database commands run as `pnpm exec drizzle-kit <cmd>`,
+documented in `infrastructure/db/README.md`.
+
+`pnpm-lock.yaml` will be modified as a side effect of the install
+(same pattern as Block 001). The lockfile is a generated artifact and
+not declared as an explicit manifest modify.
 
 ## 4. Validation
 
+- `pnpm install` succeeds after adding drizzle-kit + drizzle-orm + pg + @types/pg.
 - `docker compose up -d postgres` starts a healthy Postgres container.
-- `pnpm db:migrate` applies migrations cleanly on a fresh DB.
-- `pnpm db:migrate` is idempotent — running twice produces the same
-  state, no errors.
-- Migration roll-back (or marked irreversible) for `0001_init`.
-- `.env.example` documents every required var; `.env` is gitignored.
-- `pnpm typecheck` passes after the block.
-- `pnpm lint` passes.
+- `pnpm exec drizzle-kit <migrate-equivalent>` applies migrations
+  cleanly on a fresh DB.
+- Migration is idempotent — running twice produces the same state, no
+  errors.
+- Migration is paired with an explicit rollback (or marked irreversible
+  with justification in `infrastructure/db/README.md`).
+- `.env.example` documents every required var; `.env` is gitignored
+  (already covered by Block 001's .gitignore additions).
+- `pnpm turbo run typecheck` exits 0.
+- `pnpm exec eslint .eslintrc.cjs` clean.
+- `governor doctor` PASS 10/10 post-block.
 - Tenant-isolation pattern documented in `infrastructure/db/README.md`:
   RLS policy template + `SET LOCAL app.tenant_id` request pattern.
 
