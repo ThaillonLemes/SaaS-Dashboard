@@ -1,5 +1,4 @@
 import type {
-  Plan,
   Role,
   TenantContext,
   TenantId,
@@ -14,19 +13,22 @@ import { TenancyError, type ResourceKind } from './types';
  * INVARIANT: This is the sole constructor for `TenantContext`
  * (T1, protocols/TENANT.md). Phase 1B Block 019 fills in membership
  * lookup, role projection, and plan attachment; until then every call
- * throws {@link TenancyError} with code `'NOT_IMPLEMENTED'` so
- * skeleton-time consumers can wire the type without depending on a
- * fake.
+ * returns a rejected promise carrying a {@link TenancyError} with
+ * code `'NOT_IMPLEMENTED'` so skeleton-time consumers can wire the
+ * type without depending on a fake.
  *
- * @throws {TenancyError} always, with code `'NOT_IMPLEMENTED'`.
+ * @throws {TenancyError} via the returned promise, with code
+ *   `'NOT_IMPLEMENTED'`.
  */
-export async function getTenantContext(
-  _userId: UserId,
-  _tenantId: TenantId,
+export function getTenantContext(
+  userId: UserId,
+  tenantId: TenantId,
 ): Promise<TenantContext> {
-  throw new TenancyError(
-    'NOT_IMPLEMENTED',
-    'getTenantContext() — Phase 1B block-019',
+  return Promise.reject(
+    new TenancyError(
+      'NOT_IMPLEMENTED',
+      `getTenantContext(${userId}, ${tenantId}) — Phase 1B block-019`,
+    ),
   );
 }
 
@@ -41,12 +43,12 @@ export async function getTenantContext(
  * @throws {TenancyError} always, with code `'NOT_IMPLEMENTED'`.
  */
 export function enforceRole(
-  _ctx: TenantContext,
-  _requiredRole: Role,
+  ctx: TenantContext,
+  requiredRole: Role,
 ): void {
   throw new TenancyError(
     'NOT_IMPLEMENTED',
-    'enforceRole() — Phase 1B block-020',
+    `enforceRole(tenant=${ctx.tenantId}, requiredRole=${requiredRole}) — Phase 1B block-020`,
   );
 }
 
@@ -64,13 +66,13 @@ export function enforceRole(
  * @throws {TenancyError} always, with code `'NOT_IMPLEMENTED'`.
  */
 export function enforcePlanLimit(
-  _ctx: TenantContext,
-  _resource: ResourceKind,
-  _currentValue: number,
+  ctx: TenantContext,
+  resource: ResourceKind,
+  currentValue: number,
 ): void {
   throw new TenancyError(
     'NOT_IMPLEMENTED',
-    'enforcePlanLimit() — Phase 1B block-021',
+    `enforcePlanLimit(tenant=${ctx.tenantId}, resource=${resource}, currentValue=${String(currentValue)}) — Phase 1B block-021`,
   );
 }
 
