@@ -1,0 +1,28 @@
+# Local development Postgres only. Production uses managed Postgres
+# via the PaaS (see decisions/ADR-0004-deploy.md). The portability
+# constraint forbids any PaaS-specific persistence; this file is
+# strictly for `pnpm db:up` on a developer machine.
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: saas-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-saas_dev}
+      POSTGRES_USER: ${POSTGRES_USER:-saas}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set in .env}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - saas-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-saas} -d ${POSTGRES_DB:-saas_dev}"]
+      interval: 5s
+      timeout: 5s
+      retries: 6
+      start_period: 5s
+
+volumes:
+  saas-postgres-data:
+    name: saas-postgres-data
