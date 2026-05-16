@@ -13,6 +13,7 @@
     "governor": "pnpm --filter @saas/orchestrator run governor"
   },
   "devDependencies": {
+    "@rolldown/binding-win32-x64-msvc": "1.0.1",
     "@types/pg": "^8.20.0",
     "@typescript-eslint/eslint-plugin": "7.18.0",
     "@typescript-eslint/parser": "7.18.0",
