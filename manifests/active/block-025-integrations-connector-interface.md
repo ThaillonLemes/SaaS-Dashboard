@@ -4,7 +4,7 @@ tier: M
 kind: implementation
 phase: Phase 1C — Integrations
 scope: phase-bound
-status: Pending
+status: Complete
 domain: packages/integrations
 risk: medium
 performance_critical: false
