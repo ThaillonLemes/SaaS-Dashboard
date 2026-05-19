@@ -89,6 +89,8 @@ See [`governance/log.md`](governance/log.md). Highlights:
   Main: e50e2af. Phase 0 = 9/10. Exit-gate unblocked.
 - 2026-05-16 — Block 010 exit gate PASS. Phase 0 closed.
   Phase 1A-1F unlocked. See exit report.
+- 2026-05-19 — Phase 1 entry blocks 011/018/025/031/037 integrated.
+  Main: b45b857. All 5 phases active in parallel.
 
 ---
 
