@@ -4,7 +4,7 @@ tier: L
 kind: gate
 phase: Phase 0 — Foundation
 scope: phase-bound
-status: Pending
+status: Complete
 domain: infrastructure/phase-gate
 risk: high
 performance_critical: false
@@ -62,47 +62,47 @@ activation_criteria:
   - name: All Phase 0 blocks Complete
     threshold: "9 of 9 blocks (001-009) in manifests/archive/ with status: Complete"
     measurement: "governor next reports zero Pending blocks for Phase 0; archive directory listing"
-    pass_fail: Pending
+    pass_fail: Pass
   - name: governor doctor PASS
     threshold: "PASS (10/10) or better"
     measurement: "cd orchestrator && npx tsx bin/governor.ts doctor"
-    pass_fail: Pending
+    pass_fail: Pass
   - name: Workspace typecheck green
     threshold: "pnpm turbo run typecheck exits 0"
     measurement: "CI workflow + local re-run"
-    pass_fail: Pending
+    pass_fail: Pass
   - name: Workspace lint green
     threshold: "pnpm turbo run lint --max-warnings 0 exits 0"
     measurement: "CI workflow + local re-run"
-    pass_fail: Pending
+    pass_fail: Pass
   - name: Workspace tests green
     threshold: "pnpm turbo run test exits 0; each package has at least one passing test"
     measurement: "CI workflow + local re-run; test report aggregated"
-    pass_fail: Pending
+    pass_fail: Pass
   - name: API /health endpoint responds
     threshold: "GET /health returns 200 with { ok: true, version, uptime }"
     measurement: "curl localhost:<port>/health on locally-running apps/api"
-    pass_fail: Pending
+    pass_fail: Pass
   - name: Web shell boots
     threshold: "apps/web boots; /login route renders without console errors"
     measurement: "browser smoke check + console clean"
-    pass_fail: Pending
+    pass_fail: Pass
   - name: Postgres migration tool initialized
     threshold: "pnpm db:migrate (or npx drizzle-kit equivalent) runs idempotently on a fresh DB"
     measurement: "Docker-compose Postgres + migration command + migrations table inspection"
-    pass_fail: Pending
+    pass_fail: Pass
   - name: CI workflow green
     threshold: "A no-op PR triggers GitHub Actions; typecheck + lint + test + audit all green"
     measurement: "GitHub Actions run history"
-    pass_fail: Pending
+    pass_fail: Pass
   - name: ADRs landed
     threshold: "decisions/ contains ADR-0001 (monorepo), ADR-0002 (Postgres ORM), ADR-0003 (HTTP framework), ADR-0004 (deploy), ADR-0005 (billing); each Status: Accepted"
     measurement: "file listing + frontmatter inspection"
-    pass_fail: Pending
+    pass_fail: Pass
   - name: STATE.md reflects Phase 0 complete
     threshold: "STATE.md active phase = none; package status updated for all 9 packages"
     measurement: "Governor inspection"
-    pass_fail: Pending
+    pass_fail: Pass
 ---
 
 # Block 010 — Phase 0 exit gate
