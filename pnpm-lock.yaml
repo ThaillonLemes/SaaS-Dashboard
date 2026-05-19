@@ -8,6 +8,9 @@ importers:
 
   .:
     devDependencies:
+      '@rolldown/binding-win32-x64-msvc':
+        specifier: 1.0.1
+        version: 1.0.1
       '@types/pg':
         specifier: ^8.20.0
         version: 8.20.0
@@ -132,6 +135,19 @@ importers:
         specifier: 3.2.4
         version: 3.2.4(@types/node@25.8.0)(lightningcss@1.32.0)
 
+  packages/identity:
+    dependencies:
+      '@saas/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+    devDependencies:
+      typescript:
+        specifier: 5.9.3
+        version: 5.9.3
+      vitest:
+        specifier: 3.2.4
+        version: 3.2.4(@types/node@22.19.19)(lightningcss@1.32.0)
+
   packages/observability:
     dependencies:
       '@opentelemetry/api':
@@ -156,6 +172,19 @@ importers:
       vitest:
         specifier: 4.1.6
         version: 4.1.6(@opentelemetry/api@1.9.1)(@types/node@22.19.19)(vite@8.0.13(@types/node@22.19.19)(esbuild@0.28.0)(tsx@4.22.0)(yaml@2.9.0))
+
+  packages/tenancy:
+    dependencies:
+      '@saas/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+    devDependencies:
+      typescript:
+        specifier: 5.9.3
+        version: 5.9.3
+      vitest:
+        specifier: 3.2.4
+        version: 3.2.4(@types/node@22.19.19)(lightningcss@1.32.0)
 
 packages:
 
@@ -1240,7 +1269,6 @@ packages:
   '@rolldown/binding-win32-x64-msvc@1.0.1':
     resolution: {integrity: sha512-INAycaWuhlOK3wk4mRHGsdgwYWmd9cChdPdE9bwWmy6rn9VqVNYNFGhOdXrofXUxwHIncSiPNb8tNm8knDVIeQ==}
     engines: {node: ^20.19.0 || >=22.12.0}
-    cpu: [x64]
     os: [win32]
 
   '@rolldown/pluginutils@1.0.1':
@@ -4338,8 +4366,7 @@ snapshots:
   '@rolldown/binding-win32-arm64-msvc@1.0.1':
     optional: true
 
-  '@rolldown/binding-win32-x64-msvc@1.0.1':
-    optional: true
+  '@rolldown/binding-win32-x64-msvc@1.0.1': {}
 
   '@rolldown/pluginutils@1.0.1': {}
 

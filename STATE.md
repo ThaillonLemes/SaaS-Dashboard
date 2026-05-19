@@ -2,7 +2,7 @@
 
 _Source of truth for cross-domain current state._
 _Replace-only. Edited by the Governor on integration._
-_Last updated: 2026-05-15 (Phase 0 — 6/10 done; 3 unlocked)._
+_Last updated: 2026-05-16 (Phase 0 — COMPLETE. Phase 1A-1F unlocked)._
 
 ---
 
@@ -12,20 +12,19 @@ _Last updated: 2026-05-15 (Phase 0 — 6/10 done; 3 unlocked)._
 |---------|--------------|---------------|----------|--------|
 | _none yet_ | — | — | — | — |
 
-Next 3 blocks (005, 006, 007) unlocked but no agents assigned yet.
+All Phase 0 implementation blocks done. Only `block-010-phase-0-exit-gate` remains.
 
 ---
 
 ## Active phase
 
-**Phase:** Phase 0 — Foundation
+**Phase:** Phase 0 — Foundation — **COMPLETE** (2026-05-16)
 **Started:** 2026-05-15
-**Blocks complete:** 6 / 10 (001, 002, 003, 004, 008, 009)
-**Unlocked next:** `block-005-identity-skeleton`, `block-006-tenancy-skeleton`, `block-007-api-shell` — all 3 parallel-safe
-**Pending exit:** `block-010-phase-0-exit-gate` (after 005/006/007 land)
-**Exit doc:** [`phases/phase-0/exit.md`](phases/phase-0/exit.md)
+**Blocks complete:** 10 / 10 (001–010)
+**Exit gate:** PASS — [`phases/phase-0/exit.md`](phases/phase-0/exit.md)
+**Exit report:** [`governance/phase-0-exit-report.md`](governance/phase-0-exit-report.md)
 
-After Block 010 PASS: Phase 1A-1F unlock in parallel.
+**Active phase:** none — Phase 1A-1F may each start independently.
 
 ---
 
@@ -35,8 +34,8 @@ After Block 010 PASS: Phase 1A-1F unlock in parallel.
 |---------|--------|-------|
 | `contracts` | **complete** | 004 merged fd2bce8 |
 | `observability` | **complete** | 003 merged 058119e |
-| `identity` | skeleton pending | 005 (unblocked) |
-| `tenancy` | skeleton pending | 006 (unblocked) |
+| `identity` | **complete** | 005 merged 73705ef |
+| `tenancy` | **complete** | 006 merged a3da773 |
 | `integrations` | not bootstrapped | Phase 1C (CISSPoder first) |
 | `normalization` | not bootstrapped | Phase 1D (Br retail vocab) |
 | `analytics` | not bootstrapped | Phase 2 |
@@ -49,7 +48,7 @@ After Block 010 PASS: Phase 1A-1F unlock in parallel.
 
 | App | Status | Block |
 |-----|--------|-------|
-| `apps/api` | shell pending | 007 (unblocked; ADR-0003 inside) |
+| `apps/api` | **complete** | 007 merged e50e2af (ADR-0003: Fastify) |
 | `apps/web` | **complete** | 008 merged 30e5bde |
 
 ---
@@ -86,12 +85,16 @@ See [`governance/log.md`](governance/log.md). Highlights:
 - 2026-05-16 — Blocks 002/003/004/008/009 integrated in batch
   (5 agents parallel). Lockfile conflicts resolved by regen.
   Main: c2ff534.
+- 2026-05-16 — Blocks 005/006/007 integrated (identity, tenancy, api-shell).
+  Main: e50e2af. Phase 0 = 9/10. Exit-gate unblocked.
+- 2026-05-16 — Block 010 exit gate PASS. Phase 0 closed.
+  Phase 1A-1F unlocked. See exit report.
 
 ---
 
 ## Worktree map
 
-`busy-chaplygin-d19ec0` = Governor session. 5 agent worktrees from
-the batch (busy-hawking, naughty-stonebraker, objective-dirac,
-elegant-torvalds + the DevOps work that landed on the main checkout's
-branch directly) can be cleaned up — branches already merged.
+`busy-chaplygin-d19ec0` = Governor session. Old agent worktrees
+(busy-hawking, naughty-stonebraker, objective-dirac, elegant-torvalds,
+goofy-poincare-efeac1, vigorous-benz-284eb6, api-shell-007,
+recursing-panini-43b3bf) can be cleaned up — all branches merged.

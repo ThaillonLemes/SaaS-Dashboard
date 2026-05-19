@@ -4,7 +4,7 @@ tier: M
 kind: implementation
 phase: Phase 0 — Foundation
 scope: phase-bound
-status: Pending
+status: Complete
 domain: packages/identity
 risk: low
 performance_critical: false
