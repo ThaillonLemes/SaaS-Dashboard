@@ -4,7 +4,7 @@ tier: M
 kind: implementation
 phase: Phase 1B — Tenancy
 scope: phase-bound
-status: Pending
+status: Complete
 domain: packages/tenancy
 risk: medium
 performance_critical: false

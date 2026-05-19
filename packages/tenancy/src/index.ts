@@ -76,7 +76,15 @@ export function enforcePlanLimit(
   );
 }
 
+export {
+  createTenant,
+  getTenantById,
+  getTenantBySlug,
+  softDeleteTenant,
+} from './repository';
+export type { DrizzleDb } from './repository';
+export { tenants } from './schema';
 export { TenancyError } from './types';
 export type { ResourceKind } from './types';
 
-export type { Plan, Role, TenantContext } from '@saas/contracts';
+export type { NewTenant, Plan, Role, Tenant, TenantContext } from '@saas/contracts';
