@@ -4,7 +4,7 @@ tier: L
 kind: implementation
 phase: Phase 1D — Normalization
 scope: phase-bound
-status: Pending
+status: Complete
 domain: packages/normalization
 risk: high
 performance_critical: false
